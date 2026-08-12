@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 # Variables
-@export var enemy_speed = 100
+@export var enemy_speed = 25
 var enemy_health = 3
+var enemy_cooldown = 1
 var player
 @onready var animated_sprite = $AnimatedSprite2D
 
@@ -11,7 +12,7 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	animated_sprite.play("idle")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	# Tracks the player
 	if player:
@@ -24,24 +25,23 @@ func _physics_process(delta):
 		else:
 			animated_sprite.flip_h = false
 			
-		
 		move_and_slide()
 		
 func enemy_take_damage():
 	enemy_health -= 1 # minus the health variable by 1
 	
+	# Deletes this enemy instance when its health reaches 0 
 	if enemy_health <= 0:
 		queue_free()
 		
-
 var can_damage_player = true
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Checks if the damage cooldown is over
 	if body.has_method("player_take_damage") and can_damage_player == true:
 		body.player_take_damage()
 		
-		# Makes it so theres a 1s cooldown to dmg the player again
+		# Makes it so there is a cooldown to dmg the player again
 		can_damage_player = false
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(enemy_cooldown).timeout
 		can_damage_player = true
 		
