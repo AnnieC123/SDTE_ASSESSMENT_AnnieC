@@ -1,9 +1,13 @@
+# BASE ENEMY SCENE
+
 extends CharacterBody2D
 
-# Variables
+# Expoted Variables
 @export var enemy_speed = 25
-var enemy_health = 3
-var enemy_cooldown = 1
+@export var enemy_health = 3
+@export var enemy_cooldown = 1
+
+# Other variables
 var player
 @onready var animated_sprite = $AnimatedSprite2D
 
@@ -13,7 +17,6 @@ func _ready():
 	animated_sprite.play("idle")
 
 func _physics_process(_delta):
-	
 	# Tracks the player
 	if player:
 		var direction = (player.global_position - global_position).normalized()
