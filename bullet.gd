@@ -1,3 +1,4 @@
+# BULLET
 extends Area2D
 
 @export var bullet_speed = 125

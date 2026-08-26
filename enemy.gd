@@ -1,6 +1,7 @@
 # BASE ENEMY SCENE
 
 extends CharacterBody2D
+signal enemy_died
 
 # Expoted Variables
 @export var enemy_speed = 25
@@ -35,6 +36,7 @@ func enemy_take_damage():
 	
 	# Deletes this enemy instance when its health reaches 0 
 	if enemy_health <= 0:
+		enemy_died.emit()
 		queue_free()
 		
 var can_damage_player = true
