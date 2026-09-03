@@ -2,20 +2,26 @@
 
 extends CharacterBody2D
 
-# Variables
+# Player variables
 @export var player_speed = 75
 @export var player_health = 3
+var player_level = 1
+var player_xp = 0
+var player_xp_required = 3
+@onready var animated_sprite = $AnimatedSprite2D
 
+# Bullet varaibles
 var bullet_scene = preload("res://scenes/bullet.tscn")
 var bullet_cooldown = 1
 
-@onready var animated_sprite = $AnimatedSprite2D
-
+# GUI varaibles
+@onready var gui = $"../CanvasLayer/gui"
 
 func _ready():
 	print("ready")
 	animated_sprite.play("idle")
 	print(player_speed) #print for debugging
+	gui.update_hearts(player_health)
 	
 	# Handles automatic shooting
 	while true:	
@@ -59,10 +65,36 @@ func _physics_process(_delta):
 	move_and_slide()
 	
 func player_take_damage():
-	player_health -= 1
+	player_health -= .5
 	print("Player health:", player_health)
+	gui.update_hearts(player_health)
 	
 	if player_health <= 0:
 		print("Game Over")
 		queue_free()
+
+# Is called when he player touches the xp
+func gain_xp(xp_amount):
+	player_xp += xp_amount
+	
+	# update the xp bar
+	var gui = get_tree().current_scene.get_node("CanvasLayer/gui")
+	gui.update_xp_bar(player_xp, player_xp_required)
+	
+	# Checks if the player levels up
+	if player_xp >= player_xp_required:
+		level_up()
+	
+# Handles player level up	
+func level_up():
+	player_level += 1
+	player_xp = 0
+	player_xp_required += 2
+	print("Level up") # Debugging
+	
+	# Updates progress XP bar
+	var gui = get_tree().current_scene.get_node("CanvasLayer/gui")
+	gui.update_xp_bar(player_xp, player_xp_required)
+	
+	
 	

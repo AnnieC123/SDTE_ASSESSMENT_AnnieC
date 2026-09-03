@@ -10,12 +10,13 @@ var camera
 # Loading in the enemies
 var slime = preload("res://scenes/enemies/slime.tscn")
 var skeleton = preload("res://scenes/enemies/skeleton.tscn")
+var bat = preload("res://scenes/enemies/bat.tscn")
 
 # waves
 var waves = [
 	[slime],
-	[slime, slime, skeleton],
-	[slime, slime, slime, skeleton, skeleton]
+	[slime, slime, skeleton, bat],
+	[slime, slime, slime, skeleton, skeleton, bat, bat]
 ]
 
 # waves variables
