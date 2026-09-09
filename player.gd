@@ -7,28 +7,31 @@ extends CharacterBody2D
 @export var player_health = 3
 var player_level = 1
 var player_xp = 0
-var player_xp_required = 3
+var player_xp_required = 5
 @onready var animated_sprite = $AnimatedSprite2D
 
 # Bullet varaibles
 var bullet_scene = preload("res://scenes/bullet.tscn")
 var bullet_cooldown = 1
+var bullet_damage = 1
+var bullet_modifier = "none"
 
 # GUI varaibles
 @onready var gui = $"../CanvasLayer/gui"
+@onready var upgrade_menu = $"../CanvasLayer/upgrade_menu"
 
 func _ready():
 	print("ready")
 	animated_sprite.play("idle")
 	print(player_speed) #print for debugging
 	gui.update_hearts(player_health)
-	
+
 	# Handles automatic shooting
 	while true:	
 		# waits for however long the bullet_cooldown varaible is before shooting
 		await get_tree().create_timer(bullet_cooldown).timeout
 		shoot_bullet()
-	
+
 func get_input():
 	var input_direction = Input.get_vector("left", "right", "up", "down")
 	velocity = input_direction * player_speed
@@ -36,13 +39,13 @@ func get_input():
 func shoot_bullet():
 	# Creates a new instance of the 'bullet' scene
 	var  bullet = bullet_scene.instantiate()	
-	print(bullet) #Prints out message (for testing)
 	# Sets position and direction of the bullet to the position/direction of the player
 	bullet.global_position = global_position
 	bullet.bullet_direction = ((get_global_mouse_position() - global_position)).normalized()
+	bullet.bullet_damage = bullet_damage
 	# Adds bullet to the scene
 	get_tree().current_scene.add_child(bullet)
-	
+
 ## CLICK TO SHOOT FUNCTION:
 #func _input(event):
 	## Detects if there is a mouse click
@@ -63,7 +66,7 @@ func _physics_process(_delta):
 		animated_sprite.flip_h = true
 	get_input()
 	move_and_slide()
-	
+
 func player_take_damage():
 	player_health -= .5
 	print("Player health:", player_health)
@@ -78,7 +81,6 @@ func gain_xp(xp_amount):
 	player_xp += xp_amount
 	
 	# update the xp bar
-	var gui = get_tree().current_scene.get_node("CanvasLayer/gui")
 	gui.update_xp_bar(player_xp, player_xp_required)
 	
 	# Checks if the player levels up
@@ -93,8 +95,12 @@ func level_up():
 	print("Level up") # Debugging
 	
 	# Updates progress XP bar
-	var gui = get_tree().current_scene.get_node("CanvasLayer/gui")
 	gui.update_xp_bar(player_xp, player_xp_required)
-	
+
+	# pauses game then shows upgrade screen
+	get_tree().paused = true
+
+	upgrade_menu.show_upgrades()
+	upgrade_menu.show()
 	
 	

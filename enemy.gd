@@ -33,8 +33,8 @@ func _physics_process(_delta):
 			
 		move_and_slide()
 		
-func enemy_take_damage():
-	enemy_health -= 1 # minus the health variable by 1
+func enemy_take_damage(damage):
+	enemy_health -= damage # minus the health variable by the damage amount
 	
 	# Deletes this enemy instance when its health reaches 0 
 	if enemy_health <= 0:

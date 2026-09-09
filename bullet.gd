@@ -3,6 +3,7 @@ extends Area2D
 
 @export var bullet_speed = 125
 var bullet_direction = Vector2.ZERO
+var bullet_damage = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,5 +15,5 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("enemy_take_damage"):
-		body.enemy_take_damage()
+		body.enemy_take_damage(bullet_damage)
 		queue_free()
