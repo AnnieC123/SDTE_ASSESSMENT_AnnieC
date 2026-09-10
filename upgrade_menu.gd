@@ -28,15 +28,18 @@ var upgrades = [
 	"attack",
 	"cooldown"
 ] 
-# what the upgrade menu ui shows
+# variables
 var upgrade_choices =[]
+var player
+
+
 
 # Gets the upgrade name depending on which upgrade it is
 func get_upgrade_name(upgrade):
 	if upgrade == "speed":
 		return "SPEED UP"
 	if upgrade == "health":
-		return "HEALTH UP"
+		return "HEAL"
 	if upgrade == "attack":
 		return "ATTACK UP"
 	if upgrade == "cooldown":
@@ -92,21 +95,31 @@ func show_upgrades():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
+	player = get_tree().get_first_node_in_group("player")
 
 func _on_button_1_pressed() -> void:
 	print("button 1 pressed") #debugging
+	choose_upgrade(upgrade_choices[0])
 
 func _on_button_2_pressed() -> void:
 	print("button 2 pressed") #debugging
-
+	choose_upgrade(upgrade_choices[1])
 
 func _on_button_3_pressed() -> void:
 	print("button 3 pressed") #debugging
+	choose_upgrade(upgrade_choices[2])
+
+# Applies the upgrade to the player
+func choose_upgrade(upgrade):
+	if upgrade == "speed":
+		player.player_speed *= 1.25
+	if upgrade == "health":
+		player.player_health = min(player.player_health + 1, 3)
+		player.gui.update_hearts(player.player_health)
+	if upgrade == "attack":
+		player.bullet_damage += 1
+	if upgrade == "cooldown":
+		player.bullet_cooldown *= 0.9
+		
+	hide()
+	get_tree().paused = false

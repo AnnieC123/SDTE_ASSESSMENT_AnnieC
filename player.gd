@@ -7,7 +7,7 @@ extends CharacterBody2D
 @export var player_health = 3
 var player_level = 1
 var player_xp = 0
-var player_xp_required = 5
+var player_xp_required = 1
 @onready var animated_sprite = $AnimatedSprite2D
 
 # Bullet varaibles
@@ -20,8 +20,9 @@ var bullet_modifier = "none"
 @onready var gui = $"../CanvasLayer/gui"
 @onready var upgrade_menu = $"../CanvasLayer/upgrade_menu"
 
+# sets up how the palyer appears in the game
 func _ready():
-	print("ready")
+	print("ready") # debugging
 	animated_sprite.play("idle")
 	print(player_speed) #print for debugging
 	gui.update_hearts(player_health)
@@ -29,9 +30,13 @@ func _ready():
 	# Handles automatic shooting
 	while true:	
 		# waits for however long the bullet_cooldown varaible is before shooting
-		await get_tree().create_timer(bullet_cooldown).timeout
-		shoot_bullet()
+		await get_tree().create_timer(bullet_cooldown, false).timeout
 
+		# Checks if the game is paused before shooting
+		if not get_tree().paused:
+			shoot_bullet()
+
+# get's the keyboard input of the player
 func get_input():
 	var input_direction = Input.get_vector("left", "right", "up", "down")
 	velocity = input_direction * player_speed
@@ -58,6 +63,7 @@ func shoot_bullet():
 		#bullet.bullet_direction = (get_global_mouse_position() - global_position).normalized()
 		#get_tree().current_scene.add_child(bullet)
 
+# Function calls every frame, moves player and handles player rotation
 func _physics_process(_delta):
 	# Flips
 	if get_global_mouse_position().x > global_position.x:
@@ -67,6 +73,7 @@ func _physics_process(_delta):
 	get_input()
 	move_and_slide()
 
+# Called everytime the player takes damage and updates health
 func player_take_damage():
 	player_health -= .5
 	print("Player health:", player_health)
