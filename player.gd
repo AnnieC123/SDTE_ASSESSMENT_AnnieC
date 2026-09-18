@@ -45,8 +45,8 @@ func shoot_bullet():
 	# Creates a new instance of the 'bullet' scene
 	var  bullet = bullet_scene.instantiate()	
 	# Sets position and direction of the bullet to the position/direction of the player
-	bullet.global_position = global_position
 	bullet.bullet_direction = ((get_global_mouse_position() - global_position)).normalized()
+	bullet.global_position = global_position + bullet.bullet_direction * 8
 	bullet.bullet_damage = bullet_damage
 	# Adds bullet to the scene
 	get_tree().current_scene.add_child(bullet)

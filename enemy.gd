@@ -13,6 +13,7 @@ signal enemy_died
 var player
 @onready var animated_sprite = $AnimatedSprite2D
 var xp_scene = preload("res://scenes/xp.tscn")
+@onready var navigation_agent = $NavigationAgent2D
 
 func _ready():
 	# Runs when the node enters the tree for the first time
@@ -22,7 +23,11 @@ func _ready():
 func _physics_process(_delta):
 	# Tracks the player
 	if player:
-		var direction = (player.global_position - global_position).normalized()
+		navigation_agent.target_position = player.global_position
+		var next_position = navigation_agent.get_next_path_position()
+
+		
+		var direction = (next_position - global_position).normalized()
 		velocity = direction * enemy_speed
 		
 		# checks if the sprite needs to be flipped
@@ -32,7 +37,8 @@ func _physics_process(_delta):
 			animated_sprite.flip_h = false
 			
 		move_and_slide()
-		
+
+# Reduces the enemy's health + spawn XP when the enemy dies
 func enemy_take_damage(damage):
 	enemy_health -= damage # minus the health variable by the damage amount
 	

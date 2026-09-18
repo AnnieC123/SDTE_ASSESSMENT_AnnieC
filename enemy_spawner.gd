@@ -50,17 +50,19 @@ func _on_timer_timeout() -> void:
 		
 # Spawns the enemy by creating a new instance, picking a random spawn point, then adding the enemy instance as a child to that position
 func spawn_enemy():
-	var enemy_scene = waves[current_wave][enemy_index]
-	var enemy = enemy_scene.instantiate()
-	
-	enemy.global_position = get_spawn_position()
-	get_tree().current_scene.add_child(enemy)
-	
-	# Calls the enemy_died function when it recieves the signal
-	enemy.enemy_died.connect(enemy_died)
-	enemy_index += 1
-	enemies_to_spawn -= 1
-	enemies_alive += 1
+	#checks if there are still more waves
+	if current_wave <= waves.size():
+		var enemy_scene = waves[current_wave][enemy_index]
+		var enemy = enemy_scene.instantiate()
+		
+		enemy.global_position = get_spawn_position()
+		get_tree().current_scene.add_child(enemy)
+		
+		# Calls the enemy_died function when it recieves the signal
+		enemy.enemy_died.connect(enemy_died)
+		enemy_index += 1
+		enemies_to_spawn -= 1
+		enemies_alive += 1
 	
 	
 # Gets the spawn position of the enemy, just outside the camera range	
