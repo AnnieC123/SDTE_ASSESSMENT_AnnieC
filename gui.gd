@@ -6,6 +6,7 @@ extends Control
 @onready var wave_label = $wave_label
 @onready var animation_player = $AnimationPlayer
 @onready var xp_bar = $xpbar
+@onready var damage_effect = $damage_effect
 
 # Hearts
 @onready var heart1 = $hearts/heart1
@@ -17,6 +18,7 @@ var half_heart = 2
 var damaged_half_heart = 3
 var empty_heart = 4
 
+# updates hearts correspondingly
 func update_hearts(health):
 	if health >= 3:
 		heart1.frame = full_heart
@@ -53,22 +55,24 @@ func update_hearts(health):
 		heart2.frame = empty_heart
 		heart3.frame = empty_heart
 	
-
-
-
-
+	
 # Shows the "WAVE #" on the screen while doing a fading animation of it
 func show_wave(wave_number):
 	wave_label.text = "WAVE " + str(wave_number)
 	animation_player.play("wave_transition")
+
 
 # Updates the xp bar progress
 func update_xp_bar(current_xp, required_xp):
 	xp_bar.value = current_xp
 	xp_bar.max_value = required_xp
 
-
-
-# Called when the node enters the scene tree for the first time.
+func show_damage_effect():
+	print("show damage effect")
+	damage_effect.modulate.a = 0.5
+	var tween = create_tween()
+	tween.tween_property(damage_effect, "modulate:a", 0.0, 0.3)
+	
+# makes the damage effect invisible at the start
 func _ready() -> void:
-	pass
+	damage_effect.modulate.a = 0

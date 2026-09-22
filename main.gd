@@ -14,16 +14,16 @@ func _input(event):
 		if get_tree().paused:
 			get_tree().paused = false
 			pause_menu.hide()
+			CursorManager.set_crosshair()
+
 		# shows menu
 		else:
 			get_tree().paused =  true
 			pause_menu.show()
+			CursorManager.set_pointer()
 
-# Called when the node enters the scene tree for the first time.
+
+# Sets bgm and cursor to crosshair.
 func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+	AudioManager.play_bgm(AudioManager.main_bgm)
+	CursorManager.set_crosshair()

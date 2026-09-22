@@ -59,6 +59,7 @@ func enemy_take_damage(damage):
 			#xp.global_position = global_position + offset
 			get_tree().current_scene.call_deferred("add_child", xp)
 		
+		AudioManager.play_sfx(AudioManager.enemy_take_dmg)
 		# makes enemy instance disappear
 		enemy_died.emit()
 		queue_free()

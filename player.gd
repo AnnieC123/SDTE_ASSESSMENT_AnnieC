@@ -9,6 +9,7 @@ var player_level = 1
 var player_xp = 0
 var player_xp_required = 1
 @onready var animated_sprite = $AnimatedSprite2D
+@onready var camera = $Camera2D
 
 # Bullet varaibles
 var bullet_scene = preload("res://scenes/bullet.tscn")
@@ -50,6 +51,8 @@ func shoot_bullet():
 	bullet.bullet_damage = bullet_damage
 	# Adds bullet to the scene
 	get_tree().current_scene.add_child(bullet)
+	# Plays sound effect
+	AudioManager.play_sfx(AudioManager.shoot_bullet)
 
 ## CLICK TO SHOOT FUNCTION:
 #func _input(event):
@@ -78,6 +81,9 @@ func player_take_damage():
 	player_health -= .5
 	print("Player health:", player_health)
 	gui.update_hearts(player_health)
+	AudioManager.play_sfx(AudioManager.take_dmg)
+	screenshake()
+	gui.show_damage_effect()
 	
 	if player_health <= 0:
 		print("Game Over")
@@ -96,6 +102,10 @@ func gain_xp(xp_amount):
 	
 # Handles player level up	
 func level_up():
+	# Plays sound
+	AudioManager.play_sfx(AudioManager.level_up)
+	
+	# Updates stats
 	player_level += 1
 	player_xp = 0
 	player_xp_required += 2
@@ -106,8 +116,16 @@ func level_up():
 
 	# pauses game then shows upgrade screen
 	get_tree().paused = true
-
 	upgrade_menu.show_upgrades()
+	CursorManager.set_pointer()
 	upgrade_menu.show()
 	
-	
+# Screenshake function
+func screenshake():
+	if AudioManager.screenshake_enabled:
+		camera.position = Vector2(
+		randf_range(-20, 20),
+		randf_range(-20, 20)
+	)
+	await get_tree().create_timer(0.1).timeout
+	camera.position = Vector2.ZERO

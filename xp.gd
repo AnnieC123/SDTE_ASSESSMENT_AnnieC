@@ -20,5 +20,6 @@ func _process(_delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("gain_xp"):
 		body.gain_xp(xp_amount)
+		AudioManager.play_sfx(AudioManager.xp_pickup)
 		queue_free()
 		

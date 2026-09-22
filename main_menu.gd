@@ -2,23 +2,22 @@
 
 extends Control
 
-# Called when the node enters the scene tree for the first time.
+# Sets bgm and cursor to pointer
 func _ready() -> void:
-	pass # Replace with function body.
+	AudioManager.play_bgm(AudioManager.menu_bgm)
+	CursorManager.set_pointer()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
+# Changes scene to main game when pressed
 func _on_play_button_pressed() -> void:
+	AudioManager.play_sfx(AudioManager.click)
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
-
+# Shows the settings overlay when pressed
 func _on_settings_button_pressed() -> void:
-	pass # Replace with function body.
+	AudioManager.play_sfx(AudioManager.click)
+	$settings_menu.show()
 
-
+# Changes to credtis screen when pressed
 func _on_credits_button_pressed() -> void:
-	pass # Replace with function body.
+	AudioManager.play_sfx(AudioManager.click)
+	# Switch to credits screen

@@ -50,8 +50,8 @@ func _on_timer_timeout() -> void:
 		
 # Spawns the enemy by creating a new instance, picking a random spawn point, then adding the enemy instance as a child to that position
 func spawn_enemy():
-	#checks if there are still more waves
-	if current_wave <= waves.size():
+	#checks if the current wave still exists
+	if current_wave < waves.size():
 		var enemy_scene = waves[current_wave][enemy_index]
 		var enemy = enemy_scene.instantiate()
 		

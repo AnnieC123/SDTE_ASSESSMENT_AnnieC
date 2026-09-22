@@ -98,15 +98,15 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 
 func _on_button_1_pressed() -> void:
-	print("button 1 pressed") #debugging
+	AudioManager.play_sfx(AudioManager.shoot_bullet)
 	choose_upgrade(upgrade_choices[0])
 
 func _on_button_2_pressed() -> void:
-	print("button 2 pressed") #debugging
+	AudioManager.play_sfx(AudioManager.shoot_bullet)
 	choose_upgrade(upgrade_choices[1])
 
 func _on_button_3_pressed() -> void:
-	print("button 3 pressed") #debugging
+	AudioManager.play_sfx(AudioManager.shoot_bullet)
 	choose_upgrade(upgrade_choices[2])
 
 # Applies the upgrade to the player
@@ -120,6 +120,8 @@ func choose_upgrade(upgrade):
 		player.bullet_damage += 1
 	if upgrade == "cooldown":
 		player.bullet_cooldown *= 0.9
-		
+	
+	CursorManager.set_crosshair()
+	
 	hide()
 	get_tree().paused = false
