@@ -20,6 +20,7 @@ var bullet_modifier = "none"
 # GUI varaibles
 @onready var gui = $"../CanvasLayer/gui"
 @onready var upgrade_menu = $"../CanvasLayer/upgrade_menu"
+@onready var death_screen = $"../CanvasLayer/death_screen"
 
 # sets up how the palyer appears in the game
 func _ready():
@@ -86,8 +87,10 @@ func player_take_damage():
 	gui.show_damage_effect()
 	
 	if player_health <= 0:
-		print("Game Over")
-		queue_free()
+		print("Game Over") # DEBUGGING
+		GameManager.stop_game()
+		SceneTransition.change_scene("res://scenes/gui/death_screen.tscn")
+
 
 # Is called when he player touches the xp
 func gain_xp(xp_amount):
@@ -113,6 +116,7 @@ func level_up():
 	
 	# Updates progress XP bar
 	gui.update_xp_bar(player_xp, player_xp_required)
+	gui.update_level_display(player_level)
 
 	# pauses game then shows upgrade screen
 	get_tree().paused = true

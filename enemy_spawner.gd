@@ -32,7 +32,6 @@ func _ready() -> void:
 	camera = player.get_node("Camera2D")
 	enemies_to_spawn = waves[current_wave].size()
 	
-	print(gui) # debugging
 	gui.call_deferred("show_wave", current_wave + 1)
 	timer.start()
 	
@@ -126,12 +125,3 @@ func next_wave():
 	
 	gui.show_wave(current_wave + 1)
 	timer.start()
-
-
-
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass

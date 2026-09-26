@@ -6,6 +6,7 @@ extends Control
 @onready var wave_label = $wave_label
 @onready var animation_player = $AnimationPlayer
 @onready var xp_bar = $xpbar
+@onready var level_display = $xpbar/level_display
 @onready var damage_effect = $damage_effect
 
 # Hearts
@@ -66,6 +67,10 @@ func show_wave(wave_number):
 func update_xp_bar(current_xp, required_xp):
 	xp_bar.value = current_xp
 	xp_bar.max_value = required_xp
+	
+# Updates the level displayer
+func update_level_display(level):
+	level_display.text = "Level " + str(level)
 
 func show_damage_effect():
 	print("show damage effect")
@@ -76,3 +81,4 @@ func show_damage_effect():
 # makes the damage effect invisible at the start
 func _ready() -> void:
 	damage_effect.modulate.a = 0
+	update_level_display(1)
