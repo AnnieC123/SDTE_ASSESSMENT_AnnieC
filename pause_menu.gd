@@ -15,3 +15,4 @@ func _on_settings_button_pressed() -> void:
 func _on_menu_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/gui/main_menu.tscn")
 	get_tree().paused = false
+	

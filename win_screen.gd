@@ -1,5 +1,4 @@
-# DEATH SCREEN
-
+# WIN SCREEN
 extends Control
 
 @onready var time_survived_label = $time_survived
@@ -13,9 +12,3 @@ func _ready() -> void:
 # change scene to main menu
 func _on_menu_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/gui/main_menu.tscn")
-
-# change scene to main game level 1
-func _on_retry_button_pressed() -> void:
-	GameManager.transition_level_number = 1
-	GameManager.transition_next_scene = "res://scenes/level_1.tscn"
-	SceneTransition.change_scene("res://scenes/gui/level_transition.tscn")

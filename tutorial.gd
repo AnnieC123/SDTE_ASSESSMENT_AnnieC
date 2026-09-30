@@ -41,4 +41,4 @@ func _on_next_button_pressed() -> void:
 		current_tutorial += 1
 		show_tutorial()
 	else:
-		SceneTransition.change_scene("res://scenes/main.tscn")
+		SceneTransition.change_scene("res://scenes/gui/level_transition.tscn")

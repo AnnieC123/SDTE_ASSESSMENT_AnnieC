@@ -10,12 +10,9 @@ var bgm_enabled = true
 var screenshake_enabled = true
 
 # background music:
-var menu = preload("res://assets/sound/bgm/bgm_menu.ogg")
-var main = preload("res://assets/sound/bgm/bgm_main.ogg")
-
-# background music:
 var menu_bgm = preload("res://assets/sound/bgm/bgm_menu.ogg")
 var main_bgm = preload("res://assets/sound/bgm/bgm_main.ogg")
+var boss_bgm = preload("res://assets/sound/bgm/bgm_boss.ogg")
 
 # sound effects:
 var xp_pickup = preload("res://assets/sound/sfx/sfx_xppickup.wav")
@@ -31,6 +28,9 @@ func play_bgm(background_music):
 	if bgm_enabled:
 		bgm.stream = background_music
 		bgm.play()
+
+func stop_bgm():
+	bgm.stop()
 
 # plays the specific sound effect when called
 func play_sfx(sound_effect):

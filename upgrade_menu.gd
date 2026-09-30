@@ -109,17 +109,24 @@ func _on_button_3_pressed() -> void:
 	AudioManager.play_sfx(AudioManager.shoot_bullet)
 	choose_upgrade(upgrade_choices[2])
 
-# Applies the upgrade to the player
+# Applies the upgrade to the player + saves it in game_manager
 func choose_upgrade(upgrade):
 	if upgrade == "speed":
 		player.player_speed *= 1.25
+		GameManager.player_speed = player.player_speed
+
 	if upgrade == "health":
-		player.player_health = min(player.player_health + 1, 3)
+		player.player_health = min(player.player_health + 2, 6)
+		GameManager.player_health = player.player_health
 		player.gui.update_hearts(player.player_health)
+		
 	if upgrade == "attack":
 		player.bullet_damage += 1
+		GameManager.bullet_damage = player.bullet_damage
+
 	if upgrade == "cooldown":
 		player.bullet_cooldown *= 0.9
+		GameManager.bullet_cooldown = player.bullet_cooldown
 	
 	CursorManager.set_crosshair()
 	

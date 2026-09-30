@@ -21,32 +21,32 @@ var empty_heart = 4
 
 # updates hearts correspondingly
 func update_hearts(health):
-	if health >= 3:
+	if health >= 6:
 		heart1.frame = full_heart
 		heart2.frame = full_heart
 		heart3.frame = full_heart
 		
-	elif health == 2.5:
+	elif health == 5:
 		heart1.frame = full_heart
 		heart2.frame = full_heart
 		heart3.frame = half_heart
 		
-	elif health == 2:
+	elif health == 4:
 		heart1.frame = full_heart
 		heart2.frame = full_heart
 		heart3.frame = empty_heart
 		
-	elif health == 1.5:
+	elif health == 3:
 		heart1.frame = full_heart
 		heart2.frame = half_heart
 		heart3.frame = empty_heart
 		
-	elif health == 1:
+	elif health == 2:
 		heart1.frame = full_heart
 		heart2.frame = empty_heart
 		heart3.frame = empty_heart
 		
-	elif health == 0.5:
+	elif health == 1:
 		heart1.frame = half_heart
 		heart2.frame = empty_heart
 		heart3.frame = empty_heart

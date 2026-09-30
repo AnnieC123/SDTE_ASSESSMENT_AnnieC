@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal enemy_died
 
 # Expoted Variables
+@export var enemy_damage = 1
 @export var enemy_speed = 25
 @export var enemy_health = 3
 @export var enemy_cooldown = 1
@@ -69,7 +70,7 @@ var can_damage_player = true
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Checks if the damage cooldown is over
 	if body.has_method("player_take_damage") and can_damage_player == true:
-		body.player_take_damage()
+		body.player_take_damage(enemy_damage)
 		
 		# Makes it so there is a cooldown to dmg the player again
 		can_damage_player = false

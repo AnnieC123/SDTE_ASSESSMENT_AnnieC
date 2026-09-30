@@ -3,18 +3,18 @@
 extends CharacterBody2D
 
 # Player variables
-@export var player_speed = 75
-@export var player_health = 3
-var player_level = 1
-var player_xp = 0
-var player_xp_required = 1
+var player_speed
+var player_health
+var player_level
+var player_xp
+var player_xp_required
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var camera = $Camera2D
 
 # Bullet varaibles
 var bullet_scene = preload("res://scenes/bullet.tscn")
-var bullet_cooldown = 1
-var bullet_damage = 1
+var bullet_cooldown
+var bullet_damage
 var bullet_modifier = "none"
 
 # GUI varaibles
@@ -25,8 +25,18 @@ var bullet_modifier = "none"
 # sets up how the palyer appears in the game
 func _ready():
 	print("ready") # debugging
+	
+	# SETS PLAYER STATS
+	player_speed = GameManager.player_speed
+	player_health = GameManager.player_health
+	player_level = GameManager.player_level
+	player_xp = GameManager.player_xp
+	player_xp_required = GameManager.player_xp_required
+	# SETS BULLET STATS
+	bullet_cooldown = GameManager.bullet_cooldown
+	bullet_damage = GameManager.bullet_damage
+	
 	animated_sprite.play("idle")
-	print(player_speed) #print for debugging
 	gui.update_hearts(player_health)
 
 	# Handles automatic shooting
@@ -78,8 +88,9 @@ func _physics_process(_delta):
 	move_and_slide()
 
 # Called everytime the player takes damage and updates health
-func player_take_damage():
-	player_health -= .5
+func player_take_damage(damage):
+	player_health -= damage
+	GameManager.player_health = player_health
 	print("Player health:", player_health)
 	gui.update_hearts(player_health)
 	AudioManager.play_sfx(AudioManager.take_dmg)
@@ -95,7 +106,8 @@ func player_take_damage():
 # Is called when he player touches the xp
 func gain_xp(xp_amount):
 	player_xp += xp_amount
-	
+	GameManager.player_xp = player_xp
+
 	# update the xp bar
 	gui.update_xp_bar(player_xp, player_xp_required)
 	
@@ -105,6 +117,7 @@ func gain_xp(xp_amount):
 	
 # Handles player level up	
 func level_up():
+	print("Level up") # Debugging
 	# Plays sound
 	AudioManager.play_sfx(AudioManager.level_up)
 	
@@ -112,7 +125,10 @@ func level_up():
 	player_level += 1
 	player_xp = 0
 	player_xp_required += 2
-	print("Level up") # Debugging
+	# updates GameManager stats
+	GameManager.player_level = player_level
+	GameManager.player_xp = player_xp
+	GameManager.player_xp_required = player_xp_required
 	
 	# Updates progress XP bar
 	gui.update_xp_bar(player_xp, player_xp_required)

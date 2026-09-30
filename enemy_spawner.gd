@@ -1,23 +1,26 @@
 # ENEMY SPAWNER 
 extends Node2D
 
+signal level_completed
+
 # Variables
 @onready var timer = $Timer
 @onready var gui = $"../CanvasLayer/gui"
 var player
 var camera
 
+@export var level_number = 1
+
 # Loading in the enemies
 var slime = preload("res://scenes/enemies/slime.tscn")
 var skeleton = preload("res://scenes/enemies/skeleton.tscn")
 var bat = preload("res://scenes/enemies/bat.tscn")
+var zombie = preload("res://scenes/enemies/zombie.tscn")
+var dragon = preload("res://scenes/enemies/dragon.tscn")
+var boss = preload("res://scenes/enemies/boss.tscn")
 
-# waves
-var waves = [
-	[slime],
-	[slime, slime, skeleton, bat],
-	[slime, slime, slime, skeleton, skeleton, bat, bat]
-]
+# waves for each level
+var waves = []
 
 # waves variables
 var current_wave = 0
@@ -25,24 +28,50 @@ var enemies_to_spawn = 0
 var enemies_alive = 0
 var enemy_index = 0
 var wave_delay = 2
+var wave_completing = false
+var spawning_finished = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# SETS WAVE depending on which level it is:
+	if level_number == 1:
+		waves = [
+		[slime],
+		[slime, slime, skeleton],
+		[slime, slime, skeleton, skeleton, bat, bat]
+		]
+	elif level_number == 2:
+		waves = [
+			[skeleton, bat, skeleton, bat, zombie],
+			[bat, bat, bat, bat, zombie, zombie, zombie, dragon],
+			[slime, slime, slime, skeleton, skeleton, bat, bat, zombie, zombie, dragon, dragon]
+		]
+	elif level_number == 3:
+		waves = [
+			[boss, dragon, dragon, dragon, dragon, dragon, dragon]
+		]
+
+	
 	player = get_tree().get_first_node_in_group("player")
 	camera = player.get_node("Camera2D")
-	enemies_to_spawn = waves[current_wave].size()
 	
+	enemies_to_spawn = waves[current_wave].size()
+	spawning_finished = false
+	# shows wave number
 	gui.call_deferred("show_wave", current_wave + 1)
 	timer.start()
+	
 	
 # Calls the spawn_enemy() function when the timer runs out	
 func _on_timer_timeout() -> void:
 	# checks if the player(camera) still exists
 	if is_instance_valid(camera):
 		spawn_enemy()
+		
 		# Stops if there's no more enemies to spawn in this wave
 		if enemies_to_spawn <= 0:
 			timer.stop()
+			spawning_finished = true
 	else:
 		timer.stop()
 		
@@ -103,8 +132,10 @@ func get_spawn_position():
 # Detects if the wave is complete after each enemy dies
 func enemy_died():
 	enemies_alive -= 1
-	
-	if enemies_alive <= 0:
+	print("Enemy died- enemies alive:", enemies_alive) # Debugging
+
+	if enemies_alive <= 0 and spawning_finished and not wave_completing:
+		wave_completing = true
 		print("Wave complete") # for debugging
 		# Creates a timer for wave_delay seconds
 		await get_tree().create_timer(wave_delay).timeout
@@ -118,9 +149,12 @@ func next_wave():
 	# Checks if there are any more waves
 	if current_wave >= waves.size():
 		print("Level complete") # for debugging
+		level_completed.emit()
 		return
 	
 	enemy_index = 0
+	wave_completing = false
+	spawning_finished = false
 	enemies_to_spawn = waves[current_wave].size()
 	
 	gui.show_wave(current_wave + 1)
