@@ -5,7 +5,7 @@ extends Node
 var survival_time = 0
 var game_active = false
 
-# PLAYER STAST
+# PLAYER STATS
 var player_health = 6
 var player_level = 1
 var player_xp = 0

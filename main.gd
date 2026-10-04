@@ -26,6 +26,7 @@ func _input(event):
 
 		# shows menu
 		else:
+			pause_menu.update_stats()
 			get_tree().paused =  true
 			pause_menu.show()
 			CursorManager.set_pointer()

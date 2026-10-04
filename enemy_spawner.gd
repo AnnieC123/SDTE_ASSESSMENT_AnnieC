@@ -48,7 +48,7 @@ func _ready() -> void:
 		]
 	elif level_number == 3:
 		waves = [
-			[boss, dragon, dragon, dragon, dragon, dragon, dragon]
+			[boss]
 		]
 
 	

@@ -17,6 +17,7 @@ var fireball_scene = preload("res://scenes/fireball.tscn")
 
 var player
 var fireball_shot = false
+var hit_effect_time = 0.1
 
 # sets health on ready
 func _ready() -> void:
@@ -71,6 +72,7 @@ func _on_fireball_timer_timeout() -> void:
 # When you attack the boss + emits enemy_died after it's killed
 func enemy_take_damage(damage):
 	boss_health -= damage
+	show_hit_effect()
 	health_bar.value = boss_health
 	
 	if boss_health <= 0:
@@ -78,6 +80,11 @@ func enemy_take_damage(damage):
 		AudioManager.play_sfx(AudioManager.enemy_take_dmg)
 		queue_free()
 
+# enemy flashes red when hit by bullet
+func show_hit_effect(): 
+	animated_sprite.modulate = Color(0.69, 0.29, 0.345)
+	await get_tree().create_timer(hit_effect_time).timeout
+	animated_sprite.modulate = Color.WHITE
 
 # Changes the animation back to idle after it has finished attacking
 func _on_animated_sprite_2d_animation_finished() -> void:

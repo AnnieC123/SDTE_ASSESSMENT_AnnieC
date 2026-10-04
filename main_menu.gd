@@ -9,6 +9,9 @@ func _ready() -> void:
 
 # Changes scene to main game when pressed
 func _on_play_button_pressed() -> void:
+	GameManager.start_game()
+	GameManager.transition_level_number = 1
+	GameManager.transition_next_scene = "res://scenes/level_1.tscn"
 	SceneTransition.change_scene("res://scenes/gui/tutorial.tscn")
 
 # Shows the settings overlay when pressed

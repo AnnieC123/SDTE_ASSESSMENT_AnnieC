@@ -36,6 +36,11 @@ func _ready():
 	bullet_cooldown = GameManager.bullet_cooldown
 	bullet_damage = GameManager.bullet_damage
 	
+	#SETS XP BAR
+	gui.update_hearts(player_health)
+	gui.update_xp_bar(player_xp, player_xp_required)
+	gui.update_level_display(player_level)
+	
 	animated_sprite.play("idle")
 	gui.update_hearts(player_health)
 

@@ -81,4 +81,3 @@ func show_damage_effect():
 # makes the damage effect invisible at the start
 func _ready() -> void:
 	damage_effect.modulate.a = 0
-	update_level_display(1)

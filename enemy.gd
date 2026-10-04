@@ -12,8 +12,9 @@ signal enemy_died
 
 # Other variables
 var player
-@onready var animated_sprite = $AnimatedSprite2D
 var xp_scene = preload("res://scenes/xp.tscn")
+@onready var animated_sprite = $AnimatedSprite2D
+var hit_effect_time = 0.1
 @onready var navigation_agent = $NavigationAgent2D
 
 func _ready():
@@ -42,6 +43,7 @@ func _physics_process(_delta):
 # Reduces the enemy's health + spawn XP when the enemy dies
 func enemy_take_damage(damage):
 	enemy_health -= damage # minus the health variable by the damage amount
+	show_hit_effect()
 	
 	# Deletes this enemy instance when its health reaches 0 
 	if enemy_health <= 0:
@@ -64,6 +66,12 @@ func enemy_take_damage(damage):
 		# makes enemy instance disappear
 		enemy_died.emit()
 		queue_free()
+
+# enemy flashes red when hit by bullet
+func show_hit_effect(): 
+	animated_sprite.modulate = Color(0.69, 0.29, 0.345)
+	await get_tree().create_timer(hit_effect_time).timeout
+	animated_sprite.modulate = Color.WHITE
 
 
 var can_damage_player = true
